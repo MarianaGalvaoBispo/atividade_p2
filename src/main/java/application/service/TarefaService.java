@@ -14,20 +14,17 @@ public class TarefaService {
     @Autowired
     private TarefaRepository tarefaRepo;
 
-    // Listar todas as tarefas
     public List<TarefaDTO> getAll() {
         return tarefaRepo.findAll().stream()
                 .map(TarefaDTO::new)
                 .toList();
     }
 
-    // Adicionar uma nova tarefa
     public TarefaDTO insert(TarefaDTO tarefaDTO) {
         Tarefa tarefa = new Tarefa(tarefaDTO);
         return new TarefaDTO(tarefaRepo.save(tarefa));
     }
 
-    // Editar uma tarefa existente
     public TarefaDTO update(long id, TarefaDTO tarefaDTO) {
         Optional<Tarefa> optionalTarefa = tarefaRepo.findById(id);
         if (optionalTarefa.isPresent()) {
@@ -36,18 +33,15 @@ public class TarefaService {
             tarefa.setDescricao(tarefaDTO.descricao());
             tarefa.setDataInicio(tarefaDTO.dataInicio());
             tarefa.setDataConclusao(tarefaDTO.dataConclusao());
-            // Atualiza outros campos se necessário
             return new TarefaDTO(tarefaRepo.save(tarefa));
         }
-        return null; // ou lançar uma exceção se preferir
+        return null; 
     }
 
-    // Excluir uma tarefa pelo ID
     public void delete(long id) {
         tarefaRepo.deleteById(id);
     }
 
-    // Buscar tarefa por ID
     public Optional<TarefaDTO> getById(long id) {
         return tarefaRepo.findById(id).map(TarefaDTO::new);
     }
